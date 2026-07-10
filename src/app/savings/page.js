@@ -1,3 +1,4 @@
+import { supabase } from '@/lib/supabaseClient'
 // Same form pattern as Money In, but with a bucket selector:
 const BUCKETS = ['Groww', 'IndMoney', 'Jar']
 // Insert:
