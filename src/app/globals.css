@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@400;600;700&display=swap');
+body {
+font-family: 'Quicksand', sans-serif;
+background: #FFFDF7;
+}
+h1, h2, .font-heading { font-family: 'Patrick Hand', cursive; }
+.garden-card {
+@apply bg-white rounded-3xl shadow-sm p-5 border border-sage-100;
+}
