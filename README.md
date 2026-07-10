@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -34,3 +35,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+=======
+# Sunflora
+Sunflora 🌻 — A cute, garden-themed personal finance PWA to track income, expenses &amp; savings (Groww, IndMoney, Jar) daily. Features mood-tagged spending, no-spend streaks, weekly recap cards, and AI-powered insights on your own data. Built via structured AI prompt engineering — installable on any phone, private accounts for each user.
+>>>>>>> 1171af388027a4c35102e8e7bb7e411923765670
