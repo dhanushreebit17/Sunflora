@@ -1,9 +1,33 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@400;600;700&display=swap');
-body {
-font-family: 'Quicksand', sans-serif;
-background: #FFFDF7;
+
+@theme {
+  --color-cream-50: #FFFDF7;
+  --color-cream-100: #FBF6EA;
+  --color-blush-100: #FBE7E4;
+  --color-blush-400: #F2B8B0;
+  --color-sage-100: #E7EEE2;
+  --color-sage-400: #9CB18E;
+  --color-sage-700: #5C7052;
+  --color-gold-100: #FBEFCB;
+  --color-gold-400: #E0B33C;
+  --color-gold-700: #A9791A;
+  --color-peach-100: #FCE8E1;
+  --color-peach-400: #EFAB98;
+
+  --font-heading: "Patrick Hand", cursive;
+  --font-rounded: "Quicksand", sans-serif;
+
+  --radius-3xl: 1.75rem;
 }
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: #FFFDF7;
+}
+
 h1, h2, .font-heading { font-family: 'Patrick Hand', cursive; }
+
 .garden-card {
-@apply bg-white rounded-3xl shadow-sm p-5 border border-sage-100;
+  @apply bg-white rounded-3xl shadow-sm p-5 border border-sage-100;
 }
