@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@400;600;700&display=swap');
+@import "tailwindcss";
 
 @theme {
   --color-cream-50: #FFFDF7;
