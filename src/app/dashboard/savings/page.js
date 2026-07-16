@@ -2,15 +2,17 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { formatINR } from '@/lib/format'
+import { getBucketColor } from '@/lib/bucketColors'
 import EntryRow from '@/components/EntryRow'
+import EditModal from '@/components/EditModal'
 
-const BUCKETS = ['Groww', 'IndMoney', 'Jar']
-const BUCKET_COLORS = { Groww: '#9CB18E', IndMoney: '#EFAB98', Jar: '#F2B8B0' }
+const DEFAULT_BUCKETS = ['Groww', 'IndMoney', 'Jar']
 
 export default function SavingsDetailPage() {
   const [entries, setEntries] = useState([])
   const [filter, setFilter] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(null)
 
   useEffect(() => { load() }, [])
 
@@ -22,11 +24,15 @@ export default function SavingsDetailPage() {
     setLoading(false)
   }
 
-  const totals = BUCKETS.map(b => ({
+  const foundBuckets = [...new Set(entries.map(e => e.bucket))]
+  const allBuckets = [...DEFAULT_BUCKETS, ...foundBuckets.filter(b => !DEFAULT_BUCKETS.includes(b))]
+
+  const totals = allBuckets.map(b => ({
     bucket: b,
     total: entries.filter(e => e.bucket === b).reduce((a,r) => a + Number(r.amount), 0)
-  }))
-  const grandTotal = totals.reduce((a,t) => a + t.total, 0)
+  })).filter(t => t.total > 0 || DEFAULT_BUCKETS.includes(t.bucket))
+
+  const grandTotal = entries.reduce((a,r) => a + Number(r.amount), 0)
   const filtered = filter ? entries.filter(e => e.bucket === filter) : entries
 
   return (
@@ -43,7 +49,7 @@ export default function SavingsDetailPage() {
         {totals.map(t => (
           <button key={t.bucket} onClick={() => setFilter(filter === t.bucket ? null : t.bucket)}
             className={`garden-card !p-3 text-center ${filter === t.bucket ? 'ring-2 ring-sage-400' : ''}`}>
-            <p className="text-xs text-sage-500">{t.bucket}</p>
+            <p className="text-xs text-sage-500 truncate">{t.bucket}</p>
             <p className="font-heading text-sm text-sage-700">{formatINR(t.total)}</p>
           </button>
         ))}
@@ -57,18 +63,24 @@ export default function SavingsDetailPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {filtered.map(e => (
-            <EntryRow key={e.id}
-              color={BUCKET_COLORS[e.bucket] || '#E7EEE2'}
-              label={e.bucket}
-              sub={`${e.note || 'No note'} · ${e.entry_date}`}
-              amount={'+' + formatINR(e.amount)}
-              amountColor="#5C7052"
-            />
+            <div key={e.id} onClick={() => setEditing(e)} className="cursor-pointer active:scale-[0.99] transition">
+              <EntryRow color={getBucketColor(e.bucket, allBuckets)} label={e.bucket}
+                sub={`${e.note || 'No note'} · ${e.entry_date}`} amount={'+' + formatINR(e.amount)} amountColor="#5C7052" />
+            </div>
           ))}
         </div>
       )}
 
       <a href="/savings" className="fixed bottom-6 right-6 z-20 bg-gold-400 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg">+</a>
+
+      <EditModal open={!!editing} entry={editing} table="savings"
+        fields={[
+          { name: 'amount', label: 'Amount (₹)', type: 'number' },
+          { name: 'bucket', label: 'Bucket', type: 'select', options: allBuckets },
+          { name: 'entry_date', label: 'Date', type: 'date' },
+          { name: 'note', label: 'Note', type: 'textarea' },
+        ]}
+        onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load() }} onDeleted={() => { setEditing(null); load() }} />
     </main>
   )
 }

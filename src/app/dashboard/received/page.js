@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { formatINR } from '@/lib/format'
 import EntryRow from '@/components/EntryRow'
+import EditModal from '@/components/EditModal'
 
 export default function ReceivedPage() {
   const [entries, setEntries] = useState([])
   const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(null)
 
   useEffect(() => { load() }, [])
 
@@ -40,18 +42,24 @@ export default function ReceivedPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {entries.map(e => (
-            <EntryRow key={e.id}
-              color="#9CB18E"
-              label={e.source}
-              sub={e.entry_date}
-              amount={'+' + formatINR(e.amount)}
-              amountColor="#5C7052"
-            />
+            <div key={e.id} onClick={() => setEditing(e)} className="cursor-pointer active:scale-[0.99] transition">
+              <EntryRow color="#9CB18E" label={e.source} sub={`${e.note || 'No note'} · ${e.entry_date}`}
+                amount={'+' + formatINR(e.amount)} amountColor="#5C7052" />
+            </div>
           ))}
         </div>
       )}
 
       <a href="/money-in" className="fixed bottom-6 right-6 z-20 bg-gold-400 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg">+</a>
+
+      <EditModal open={!!editing} entry={editing} table="income"
+        fields={[
+          { name: 'amount', label: 'Amount (₹)', type: 'number' },
+          { name: 'source', label: 'Source', type: 'text' },
+          { name: 'entry_date', label: 'Date', type: 'date' },
+          { name: 'note', label: 'Note', type: 'textarea' },
+        ]}
+        onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load() }} onDeleted={() => { setEditing(null); load() }} />
     </main>
   )
 }

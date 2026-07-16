@@ -4,10 +4,15 @@ import { supabase } from '@/lib/supabaseClient'
 import { formatINR } from '@/lib/format'
 import { CATEGORY_COLORS } from '@/lib/categoryColors'
 import EntryRow from '@/components/EntryRow'
+import EditModal from '@/components/EditModal'
+
+const CATEGORIES = ['Food', 'Shopping', 'Travel', 'Bills', 'Fun', 'Self-care', 'Other']
+const MOODS = ['worth_it', 'meh', 'regret']
 
 export default function TodayPage() {
   const [entries, setEntries] = useState([])
   const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(null)
 
   useEffect(() => { load() }, [])
 
@@ -16,6 +21,7 @@ export default function TodayPage() {
     if (!user) return
     const today = new Date().toISOString().slice(0,10)
     const { data } = await supabase.from('expenses').select('*').eq('user_id', user.id).eq('entry_date', today)
+      .order('created_at', { ascending: false })
     setEntries(data || [])
     setLoading(false)
   }
@@ -39,18 +45,25 @@ export default function TodayPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {entries.map(e => (
-            <EntryRow key={e.id}
-              color={CATEGORY_COLORS[e.category] || '#E7EEE2'}
-              label={e.category}
-              sub={e.note || 'No note'}
-              amount={'−' + formatINR(e.amount)}
-              amountColor="#EFAB98"
-            />
+            <div key={e.id} onClick={() => setEditing(e)} className="cursor-pointer active:scale-[0.99] transition">
+              <EntryRow color={CATEGORY_COLORS[e.category] || '#E7EEE2'} label={e.category}
+                sub={e.note || 'No note'} amount={'−' + formatINR(e.amount)} amountColor="#EFAB98" />
+            </div>
           ))}
         </div>
       )}
 
       <a href="/money-out" className="fixed bottom-6 right-6 z-20 bg-gold-400 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg">+</a>
+
+      <EditModal open={!!editing} entry={editing} table="expenses"
+        fields={[
+          { name: 'amount', label: 'Amount (₹)', type: 'number' },
+          { name: 'category', label: 'Category', type: 'select', options: CATEGORIES },
+          { name: 'mood', label: 'Mood', type: 'select', options: MOODS },
+          { name: 'entry_date', label: 'Date', type: 'date' },
+          { name: 'note', label: 'Note', type: 'textarea' },
+        ]}
+        onClose={() => setEditing(null)} onSaved={() => { setEditing(null); load() }} onDeleted={() => { setEditing(null); load() }} />
     </main>
   )
 }

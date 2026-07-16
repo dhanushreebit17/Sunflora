@@ -3,11 +3,15 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { formatINR } from '@/lib/format'
 import { CATEGORY_COLORS } from '@/lib/categoryColors'
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
+import {
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
+  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid
+} from 'recharts'
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
   const [categoryData, setCategoryData] = useState([])
+  const [chartType, setChartType] = useState('pie')
 
   useEffect(() => { load() }, [])
 
@@ -76,9 +80,9 @@ export default function Dashboard() {
   return (
     <main className="p-5 pb-24 bg-cream-50 min-h-screen">
       <div className="flex items-center justify-between mb-4">
-  <h1 className="font-heading text-3xl text-sage-700">Your Garden 🌱</h1>
-  <a href="/account" className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center text-lg">👤</a>
-</div>
+        <h1 className="font-heading text-3xl text-sage-700">Your Garden 🌱</h1>
+        <a href="/account" className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center text-lg flex-shrink-0">👤</a>
+      </div>
 
       <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
         <a href="/money-in" className="whitespace-nowrap bg-sage-100 text-sage-700 rounded-full px-4 py-2 text-sm font-bold">+ Money In</a>
@@ -87,18 +91,48 @@ export default function Dashboard() {
       </div>
 
       <div className="garden-card mb-5">
-        <h2 className="font-heading text-lg text-sage-700 mb-2">This month by category</h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="font-heading text-lg text-sage-700">This month by category</h2>
+          <div className="flex gap-1 bg-cream-100 rounded-full p-1">
+            {['pie','bar','line'].map(t => (
+              <button key={t} onClick={() => setChartType(t)}
+                className={`px-2.5 py-1 rounded-full text-xs font-bold capitalize ${chartType === t ? 'bg-sage-400 text-white' : 'text-sage-500'}`}>
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {categoryData.length > 0 ? (
           <>
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={80} paddingAngle={3}>
-                  {categoryData.map((d, i) => (
-                    <Cell key={i} fill={CATEGORY_COLORS[d.name] || '#E7EEE2'} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(v) => formatINR(v)} />
-              </PieChart>
+            <ResponsiveContainer width="100%" height={220}>
+              {chartType === 'pie' ? (
+                <PieChart>
+                  <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius={45} outerRadius={80}
+                       paddingAngle={3} label={({ name }) => name} labelLine={false}>
+                    {categoryData.map((d, i) => <Cell key={i} fill={CATEGORY_COLORS[d.name] || '#E7EEE2'} />)}
+                  </Pie>
+                  <Tooltip formatter={(v) => formatINR(v)} />
+                </PieChart>
+              ) : chartType === 'bar' ? (
+                <BarChart data={categoryData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E7EEE2" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <Tooltip formatter={(v) => formatINR(v)} />
+                  <Bar dataKey="value" radius={[8,8,0,0]}>
+                    {categoryData.map((d, i) => <Cell key={i} fill={CATEGORY_COLORS[d.name] || '#E7EEE2'} />)}
+                  </Bar>
+                </BarChart>
+              ) : (
+                <LineChart data={categoryData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E7EEE2" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <Tooltip formatter={(v) => formatINR(v)} />
+                  <Line type="monotone" dataKey="value" stroke="#E0B33C" strokeWidth={2.5} dot={{ r: 4 }} />
+                </LineChart>
+              )}
             </ResponsiveContainer>
             <div className="flex flex-wrap gap-3 mt-2">
               {categoryData.map((d, i) => (
