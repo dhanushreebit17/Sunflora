@@ -19,7 +19,7 @@ return (
 <input type="number" placeholder="Amount (n)" required
 className="rounded-2xl border border-sage-100 p-3"
 value={form.amount} onChange={e=>setForm({...form, amount:e.target.value})} />
-<input type="text" placeholder="Who gave it? (Dad, Salary, Freelance...)" required
+<input type="text" placeholder="Who gave it? (Dad, Salary...)" required
 className="rounded-2xl border border-sage-100 p-3"
 value={form.source} onChange={e=>setForm({...form, source:e.target.value})} />
 <input type="date" className="rounded-2xl border border-sage-100 p-3"
@@ -27,7 +27,7 @@ value={form.entry_date} onChange={e=>setForm({...form, entry_date:e.target.value
 <textarea placeholder="Note (optional)" className="rounded-2xl border border-sage-100 p-3"
 value={form.note} onChange={e=>setForm({...form, note:e.target.value})} />
 <button className="bg-gold-400 text-white rounded-full py-3 font-bold active:scale-95 transition">
-Plant it n
+Plant it 
 </button>
 </form>
 </main>
