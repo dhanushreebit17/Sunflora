@@ -35,10 +35,10 @@ export default function LeftPage() {
       <a href="/dashboard" className="text-sage-500 text-sm">‹ Back</a>
       <h1 className="font-heading text-2xl text-sage-700 my-3">Left This Month 🌼</h1>
 
-      <div className={`garden-card mb-5 ${data.remaining >= 0 ? 'bg-blush-100' : 'bg-peach-100'}`}>
-        <p className="text-xs text-sage-500">Remaining to spend</p>
-        <p className="font-heading text-3xl text-peach-400">{formatINR(data.remaining)}</p>
-      </div>
+      <div className={`garden-card mb-5 ${data.remaining >= 0 ? 'bg-sage-100' : 'bg-rose-100'}`}>
+  <p className="text-xs text-sage-500">Remaining to spend</p>
+  <p className={`font-heading text-3xl ${data.remaining >= 0 ? 'text-sage-700' : 'text-rose-600'}`}>{formatINR(data.remaining)}</p>
+</div>
 
       <p className="font-heading text-sage-700 mb-2">Income vs Expense</p>
       <div className="mb-1">

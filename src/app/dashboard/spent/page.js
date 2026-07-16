@@ -20,7 +20,7 @@ export default function SpentPage() {
     const startOfMonth = new Date(); startOfMonth.setDate(1)
     const { data } = await supabase.from('expenses').select('*').eq('user_id', user.id)
       .gte('entry_date', startOfMonth.toISOString().slice(0,10))
-      .order('entry_date', { ascending: false })
+      .order('created_at', { ascending: false })
     setEntries(data || [])
     setLoading(false)
   }

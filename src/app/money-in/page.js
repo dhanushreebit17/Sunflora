@@ -14,7 +14,7 @@ setForm({ amount:'', source:'', entry_date: new Date().toISOString().slice(0,10)
 }
 return (
 <main className="p-5 pb-24 bg-cream-50 min-h-screen">
-<h1 className="font-heading text-2xl text-sage-700 mb-4">Money In n</h1>
+<h1 className="font-heading text-2xl text-sage-700 mb-4">Money In</h1>
 <form onSubmit={submit} className="garden-card flex flex-col gap-4">
 <input type="number" placeholder="Amount (n)" required
 className="rounded-2xl border border-sage-100 p-3"

@@ -75,7 +75,10 @@ export default function Dashboard() {
 
   return (
     <main className="p-5 pb-24 bg-cream-50 min-h-screen">
-      <h1 className="font-heading text-3xl text-sage-700 mb-4">Your Garden 🌱</h1>
+      <div className="flex items-center justify-between mb-4">
+  <h1 className="font-heading text-3xl text-sage-700">Your Garden 🌱</h1>
+  <a href="/account" className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center text-lg">👤</a>
+</div>
 
       <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
         <a href="/money-in" className="whitespace-nowrap bg-sage-100 text-sage-700 rounded-full px-4 py-2 text-sm font-bold">+ Money In</a>
