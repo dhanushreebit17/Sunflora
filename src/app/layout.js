@@ -2,7 +2,7 @@ import './globals.css'
 import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
-  title: 'Sunflower & Sage',
+  title: 'Sunflora🌻',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Sunflower' },
 }
