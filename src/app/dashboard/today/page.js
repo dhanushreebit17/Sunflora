@@ -33,9 +33,9 @@ export default function TodayPage() {
       <a href="/dashboard" className="text-sage-500 text-sm">‹ Back</a>
       <h1 className="font-heading text-2xl text-sage-700 my-3">Today's Spend ☀️</h1>
 
-      <div className="garden-card bg-peach-100 mb-4">
+      <div className="garden-card bg-mint-100 mb-4">
         <p className="text-xs text-sage-500">Spent today so far</p>
-        <p className="font-heading text-3xl text-peach-400">{formatINR(total)}</p>
+        <p className="font-heading text-3xl text-mint-700">{formatINR(total)}</p>
       </div>
 
       {loading ? (

@@ -1,4 +1,5 @@
 import './globals.css'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
   title: 'Sunflower & Sage',
@@ -13,7 +14,12 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster position="top-center" toastOptions={{
+          style: { background: '#FBF6EA', color: '#5C7052', borderRadius: '16px' }
+        }} />
+      </body>
     </html>
   )
 }

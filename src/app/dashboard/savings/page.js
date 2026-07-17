@@ -40,9 +40,9 @@ export default function SavingsDetailPage() {
       <a href="/dashboard" className="text-sage-500 text-sm">‹ Back</a>
       <h1 className="font-heading text-2xl text-sage-700 my-3">Savings 🌻</h1>
 
-      <div className="garden-card bg-gold-100 mb-4">
+      <div className="garden-card bg-olive-100 mb-4">
         <p className="text-xs text-sage-500">Total saved away</p>
-        <p className="font-heading text-3xl text-gold-700">{formatINR(grandTotal)}</p>
+        <p className="font-heading text-3xl text-olive-700">{formatINR(grandTotal)}</p>
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-4">

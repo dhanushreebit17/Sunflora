@@ -12,12 +12,16 @@ export default function Dashboard() {
   const [stats, setStats] = useState(null)
   const [categoryData, setCategoryData] = useState([])
   const [chartType, setChartType] = useState('pie')
+  const [profile, setProfile] = useState(null)
 
   useEffect(() => { load() }, [])
 
   async function load() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
+
+    supabase.from('account_info').select('display_name, avatar_icon').eq('user_id', user.id).maybeSingle()
+      .then(({ data }) => setProfile(data))
 
     const startOfMonth = new Date(); startOfMonth.setDate(1)
     const today = new Date().toISOString().slice(0,10)
@@ -65,23 +69,28 @@ export default function Dashboard() {
     { label: 'Total Balance', value: stats.balance, tone: 'gold', href: '/dashboard/balance' },
     { label: 'Received this month', value: stats.monthIn, tone: 'sage', href: '/dashboard/received' },
     { label: 'Spent this month', value: stats.monthOut, tone: 'peach', href: '/dashboard/spent' },
-    { label: 'Left this month', value: stats.left, tone: 'blush', href: '/dashboard/left' },
-    { label: "Today's spend", value: stats.todaySpend, tone: 'peach', href: '/dashboard/today' },
-    { label: 'Total saved', value: stats.totalSaved, tone: 'gold', href: '/dashboard/savings' },
+    { label: 'Left this month', value: stats.left, tone: 'lilac', href: '/dashboard/left' },
+    { label: "Today's spend", value: stats.todaySpend, tone: 'mint', href: '/dashboard/today' },
+    { label: 'Total saved', value: stats.totalSaved, tone: 'olive', href: '/dashboard/savings' },
   ]
 
   const toneClasses = {
     sage: 'bg-sage-100 text-sage-700',
     gold: 'bg-gold-100 text-gold-700',
     peach: 'bg-peach-100 text-peach-400',
-    blush: 'bg-blush-100 text-peach-400',
+    lilac: 'bg-lilac-100 text-lilac-700',
+    mint: 'bg-mint-100 text-mint-700',
+    olive: 'bg-olive-100 text-olive-700',
   }
 
   return (
     <main className="p-5 pb-24 bg-cream-50 min-h-screen">
       <div className="flex items-center justify-between mb-4">
         <h1 className="font-heading text-3xl text-sage-700">Your Garden 🌱</h1>
-        <a href="/account" className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center text-lg flex-shrink-0">👤</a>
+        <a href="/account" className="flex items-center gap-2 flex-shrink-0">
+          {profile?.display_name && <span className="text-sm font-bold text-sage-700">{profile.display_name}</span>}
+          <span className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center text-lg">{profile?.avatar_icon || '🐰'}</span>
+        </a>
       </div>
 
       <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
