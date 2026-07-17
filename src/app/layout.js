@@ -1,10 +1,11 @@
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import BottomNav from '@/components/BottomNav'
 
 export const metadata = {
-  title: 'Sunflora🌻',
+  title: 'Sunflora 🌻',
   manifest: '/manifest.json',
-  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Sunflower' },
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Sunflora' },
 }
 
 export const viewport = {
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         {children}
+        <BottomNav />
         <Toaster position="top-center" toastOptions={{
           style: { background: '#FBF6EA', color: '#5C7052', borderRadius: '16px' }
         }} />
