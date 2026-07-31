@@ -19,9 +19,10 @@ export default function Signup() {
   const rules = {
     length: password.length >= 8,
     upper: /[A-Z]/.test(password),
+    number: /[0-9]/.test(password),
     symbol: /[!@#$%^&*(),.?":{}|<>_\-+=]/.test(password),
   }
-  const allValid = rules.length && rules.upper && rules.symbol
+  const allValid = rules.length && rules.upper && rules.number && rules.symbol
 
   async function handleSignup(e) {
     e.preventDefault()
@@ -115,6 +116,7 @@ export default function Signup() {
           <div className="flex flex-col gap-1 -mt-2 text-sm">
             <RuleLine ok={rules.length} label="At least 8 characters" />
             <RuleLine ok={rules.upper} label="One uppercase letter" />
+            <RuleLine ok={rules.number} label="One number" />
             <RuleLine ok={rules.symbol} label="One symbol (e.g. & @ ! #)" />
             {allValid && (
               <p className="text-sage-700 flex items-center gap-1 mt-1">
